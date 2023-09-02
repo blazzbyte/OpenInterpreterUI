@@ -4,9 +4,9 @@
 	"name": "Python 3",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.11-bullseye",
-	"features": {
-		"ghcr.io/devcontainers/features/python:1": {}
-	},
+	// "features": {
+	// 	"ghcr.io/devcontainers/features/python:1": {}
+	// },
 
 	  // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
@@ -20,7 +20,7 @@
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
-        "streetsidesoftware.code-spell-checker", "ms-python.python", "PKief.material-icon-theme"
+        "ms-python.python", "PKief.material-icon-theme"
       ]
     }
   }
