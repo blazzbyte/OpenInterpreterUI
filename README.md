@@ -1,7 +1,7 @@
 # GuiStreamlitOpenInterpreter
 Trying to make an easy gui to use Open Interpreter
 
-![](UI.png)
+[![Streamlit UI](UI.png)](https://uiappopeninterpreter.streamlit.app/)
 
 ## Table of Contents
 
@@ -35,6 +35,11 @@ Before you begin, ensure you have met the following requirements:
 - Dependencies mentioned in the `requirements.txt` file.
 
 ### Installation
+- **Try it Online**
+  
+  - No need to insatall
+  - [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://uiappopeninterpreter.streamlit.app/)
+- **Or Try it Locally**
 
 1. Clone this repository:
 
