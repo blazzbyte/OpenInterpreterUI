@@ -54,7 +54,7 @@ with st.sidebar:
     add_vertical_space(2)
     st.write('<center><h6>Hecho con ❤️ por <a href="mailto:blazzmo.company@gmail.com">AI-Programming</a></h6>',unsafe_allow_html=True)
 
-# st.write(st.session_state)
+st.write(st.session_state)
 for msg in st.session_state.messages:
     if msg["role"]=="user":
         st.chat_message(msg["role"]).text(msg["content"])
@@ -62,7 +62,7 @@ for msg in st.session_state.messages:
         st.chat_message(msg["role"]).markdown(msg["content"])
 
 if prompt := st.chat_input(placeholder="Write here your message", disabled=not st.session_state.OpenAI_api_key):
-    st.write(interpreter.messages)
+    # st.write(interpreter.messages)
 
     interpreter.model = "gpt-3.5-turbo"
     
@@ -72,6 +72,8 @@ if prompt := st.chat_input(placeholder="Write here your message", disabled=not s
 
     with st.chat_message("assistant"):
         # Initialize variables
+        codeb = True
+        outputb = False
         full_response = ""
         message_placeholder = st.empty()
         for chunk in interpreter.chat(prompt, display=False, stream=True):
@@ -86,20 +88,31 @@ if prompt := st.chat_input(placeholder="Write here your message", disabled=not s
             if "code" in chunk:
               # Handle code lines
               if full_response.endswith("```"):
-                full_response = full_response[:len(full_response)-3] + chunk['code'] + "```"
+                if chunk['code'].find("\n")!=-1 and codeb:
+                    partido = full_response[:len(full_response)-3].split("```")[-1]
+                    print(partido)
+                    full_response = full_response.replace("```"+partido,"\n```\n" + partido + chunk['code'])
+                    codeb = False
+                else:
+                    full_response = full_response[:len(full_response)-3] + chunk['code'] + "```"
               else:
                 full_response += f"```{chunk['code']}```"
             
             # Output
             if "executing" in chunk:
                 # Handle code execution messages
-                if full_response.endswith("```"):
+                if full_response.endswith("```") and full_response[:len(full_response)-3].split("```")[-1].find("\n") != -1:
                     full_response = full_response[:len(full_response)-3] + "\n```"
                 full_response += f"\n\n```{chunk['executing']['language']}\n{chunk['executing']['code']}\n```"
             if "output" in chunk:
                 # Handle output messages
-                if chunk["output"] != "KeyboardInterrupt":
+                if chunk["output"] != "KeyboardInterrupt" and outputb:
+                    full_response = full_response[:len(full_response)-4] + chunk['output'] + "\n```\n"
+                elif chunk["output"] != "KeyboardInterrupt":
                     full_response += f"\n\n```text\n{chunk['output']}```\n"
+                    codeb = True
+                    outputb = True
+
             if "end_of_execution" in chunk:
                 # Add a newline to separate executions
                 full_response = full_response.strip()
