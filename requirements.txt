@@ -61,7 +61,7 @@ multidict==6.0.4
 mypy-extensions==1.0.0
 numexpr==2.8.7
 numpy==1.26.0
-open-interpreter==0.1.7
+open-interpreter==0.1.6
 openai==0.28.1
 packaging==23.2
 pandas==2.1.1
@@ -106,6 +106,7 @@ streamlit-image-coordinates==0.1.6
 streamlit-keyup==0.2.0
 streamlit-toggle-switch==1.0.2
 streamlit-vertical-slider==1.0.2
+streamlit-option-menu==0.3.6
 tenacity==8.2.3
 termcolor==2.3.0
 tiktoken==0.4.0
@@ -122,6 +123,7 @@ tzdata==2023.3
 tzlocal==5.0.1
 ujson==5.8.0
 urllib3==1.26.16
+uuid==1.30
 validators==0.22.0
 watchdog==3.0.0
 wcmatch==8.5
