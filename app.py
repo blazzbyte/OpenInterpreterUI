@@ -68,6 +68,11 @@ ANY FILE THAT YOU HAVE TO CREATE IT HAS TO BE CREATE IT IN './workspace' EVEN WH
 You are capable of almost *any* task, but you can't run code that show *UI* from a python file then that's why you always review the code in the file, you're told to run.
 """
 
+#INITIAL SESSION STATE
+if 'user_id' not in st.session_state:
+    user_id = str(uuid.uuid4())
+    st.session_state.user_id = user_id
+
 # INITIAL STATES
 if 'openai_key' in st.session_state and 'temperature' in st.session_state:
     interpreter.reset()
@@ -82,14 +87,14 @@ else:
 
 #DATABASE
 create_tables()
-conversations = list(reversed(get_all_conversations()))
+conversations = list(reversed(get_all_conversations(st.session_state.user_id)))
 current_conversation = None
 
 if conversations:
     current_conversation = conversations[0]
 else:
     conversation_id = str(uuid.uuid4())
-    new_conversation = Conversation(conversation_id, f"Conversation {len(conversations)}")
+    new_conversation = Conversation(conversation_id, st.session_state.user_id, f"Conversation {len(conversations)}")
     save_conversation(new_conversation)
     st.rerun()
 
@@ -152,7 +157,8 @@ with st.sidebar:
 
     if st.button("Add New Conversation"):
         conversation_id = str(uuid.uuid4())
-        new_conversation = Conversation(conversation_id, f"Conversation {len(conversations)}")
+        user_id = st.session_state.user_id
+        new_conversation = Conversation(conversation_id, user_id, f"Conversation {len(conversations)}")
         save_conversation(new_conversation)
         st.rerun()
     

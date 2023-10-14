@@ -3,7 +3,7 @@ import uuid
 from contextlib import contextmanager
 from src.data.models import Conversation, Chat
 
-DATABASE_PATH = "chats_db.db"
+DATABASE_PATH = "chats.db"
 
 @contextmanager
 def create_connection():
@@ -21,6 +21,7 @@ def create_tables():
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS conversations (
                 id TEXT PRIMARY KEY,
+                user_id TEXT,
                 name TEXT
             )
         ''')
@@ -37,15 +38,15 @@ def create_tables():
 
 def save_conversation(conversation):
     with create_connection() as cursor:
-        cursor.execute("INSERT INTO conversations (id, name) VALUES (?, ?)", (conversation.id, conversation.name))
+        cursor.execute("INSERT INTO conversations (id, user_id, name) VALUES (?, ?, ?)", (conversation.id, conversation.user_id, conversation.name))
 
 def save_chat(chat):
     with create_connection() as cursor:
         cursor.execute("INSERT INTO chats (id, conversation_id, role, content) VALUES (?, ?, ?, ?)", (str(uuid.uuid4()), chat.conversation_id, chat.role, chat.content))
 
-def get_all_conversations():
+def get_all_conversations(user_id):
     with create_connection() as cursor:
-        cursor.execute("SELECT id, name FROM conversations")
+        cursor.execute("SELECT id, user_id, name FROM conversations WHERE user_id=?", (user_id,))
         result = cursor.fetchall()
         conversations = [Conversation(*row) for row in result]
         return [conversation.to_dict() for conversation in conversations]

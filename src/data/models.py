@@ -1,12 +1,14 @@
 import json
 
+
 class Conversation:
-    def __init__(self, id, name):
+    def __init__(self, id, user_id, name = 'Conversation'):
         self.id = id
+        self.user_id = user_id
         self.name = name
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return {"id": self.id, "user_id": self.user_id, "name": self.name}
 
     def to_json(self):
         return json.dumps(self.to_dict())
