@@ -1,7 +1,7 @@
-# GuiStreamlitOpenInterpreter
-Trying to make an easy gui to use Open Interpreter
+# Gui Streamlit OpenInterpreter
+Are you tired of the hassle of running code and having to set up your envinronment for development? Say hello to GuiStreamlitOpenInterpreter, a game-changing project that's designed to help people that don't want to buy a montly suscription and desire to have the advantage of pay as they go to get a smooth experience. With a user-friendly graphical user interface (GUI) powered by Streamlit, you can effortlessly engage with Python, javascrip and others languages without the need for traditional coding to help out begginers.
 
-[![Streamlit UI](UI.png)](https://uiappopeninterpreter.streamlit.app/)
+[![Streamlit UI](Open-Interpreter-Web.png)](https://openinterpreter.streamlit.app/)
 
 ## Table of Contents
 
@@ -10,6 +10,8 @@ Trying to make an easy gui to use Open Interpreter
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+    - [Try it Online](#try-it-online)
+    - [Or Try it Locally](#or-try-it-locally)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -20,7 +22,7 @@ GuiStreamlitOpenInterpreter is a project aimed at simplifying the process of run
 
 ## Features
 
-- User-friendly interface for running Python code and others.
+- User-friendly interface for running Python, java code and others.
 - Integration with OpenAI applications for natural language processing and chatbot functionalities.
 - Simplified execution of code and interaction with OpenAI models.
 - Customizable and extensible for different use cases.
@@ -38,13 +40,13 @@ Before you begin, ensure you have met the following requirements:
 - **Try it Online**
   
   - No need to insatall
-  - [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://uiappopeninterpreter.streamlit.app/)
+  - [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://openinterpreter.streamlit.app/)
 - **Or Try it Locally**
 
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/IA-Programming/GuiStreamlitOpenInterpreter.git
+   git clone https://github.com/blazzbyte/OpenInterpreterUI.git
    ```
 
 2. Navigate to the project directory:
