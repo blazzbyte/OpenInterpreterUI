@@ -133,11 +133,22 @@ with st.sidebar:
                 st.session_state.openai_key = ''
                 st.warning(
                     "Please add your OpenAI API key correctly to continue.")
+    
+    new_conversation_name = st.text_input("Enter New Conversation Name:")
+    if st.button("Add New Conversation") and new_conversation_name.strip() != "":
+        # Verificar si el nombre de la conversación ya existe
+        if any(conv["name"] == new_conversation_name for conv in conversations):
+            st.warning("Conversation with that name already exists. Please choose a different name.")
+        else:
+            conversation_id = str(uuid.uuid4())
+            user_id = st.session_state.user_id
+            new_conversation = Conversation(conversation_id, user_id, new_conversation_name)
+            save_conversation(new_conversation)
+            st.success(f"Conversation '{new_conversation_name}' added successfully!")
+            st.rerun()
 
     # CONVERSATIONS NAV
-    
     icons_conversations = ['chat-right-dots-fill'] * len(conversation_options)
-
     selected_conversation = option_menu(
     "Conversations", conversation_options, default_index=0, menu_icon='chat', icons=icons_conversations,
         styles={
@@ -147,26 +158,19 @@ with st.sidebar:
         },
         key='menu'
     )
-
     if(selected_conversation):
         for element in conversations:
             if element.get("name") == selected_conversation:
                 current_conversation = element
                 break
         st.session_state.messages = get_chats_by_conversation_id(current_conversation["id"])
-
-    if st.button("Add New Conversation"):
-        conversation_id = str(uuid.uuid4())
-        user_id = st.session_state.user_id
-        new_conversation = Conversation(conversation_id, user_id, f"Conversation {len(conversations)}")
-        save_conversation(new_conversation)
-        st.rerun()
     
     if st.button("Delete Current Conversation", type='primary'):
         delete_conversation(current_conversation["id"])
         st.rerun()
 
-    add_vertical_space(5)
+
+    add_vertical_space(8)
     html_chat = '<center><h5>🤗 Support the project with a donation for the development of new Features 🤗</h5>'
     st.markdown(html_chat, unsafe_allow_html=True)
     button = '<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="blazzmocompany" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>'

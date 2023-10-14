@@ -1,0 +1,69 @@
+.eczjsme4 {
+    padding: 4rem 1rem;
+}
+
+.css-w770g5 {
+    width: 100%;
+}
+
+.css-b3z5c9 {
+    width: 100%;
+}
+
+.stButton>button {
+    width: 100%;
+}
+
+.stDownloadButton>button {
+    width: 100%;
+}
+
+/*DELETE BUTTON*/
+button[data-testid="baseButton-primary"] {
+    border-color: #505050;
+    background-color: #1E1E1E;
+}
+
+button[data-testid="baseButton-primary"]:hover {
+    border-color: #FC625F;
+    background-color: #1E1E1E;
+    color: #FC625F;
+}
+
+.e1f1d6gn4 .ef3psqc11{
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.e1f1d6gn4{
+    align-items: baseline;
+    gap: 0;
+    border-radius: 5px;
+    padding: 0px 5px !important;
+}
+
+.e1f1d6gn4:hover{
+    background-color: #151515 !important;
+    cursor: pointer;
+}
+
+.e1f1d6gn4 button[data-testid="baseButton-primary"]{
+    justify-content: flex-start !important;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.e1f1d6gn4 button[data-testid="baseButton-primary"]:hover{
+    justify-content: flex-start !important;
+    border-color: transparent;
+    background-color: transparent;
+    color: #68FFD5;
+}
+
+div[data-testid="stHorizontalBlock"]{
+    margin-bottom: -12px
+}
+
+.e1f1d6gn4 button[data-testid="baseButton-primary"]:active{
+    color: #68FFD5;
+}
