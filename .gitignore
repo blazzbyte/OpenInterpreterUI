@@ -1,3 +1,5 @@
+# DB and uuid
+chats_db.db
 litell_uuid.txt
 # Virtual environment
 myenv/
