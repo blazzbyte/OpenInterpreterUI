@@ -5,9 +5,17 @@ from streamlit_option_menu import option_menu
 import streamlit as st
 import interpreter
 import uuid
+import json
+import os
 # Database
 from src.data.database import create_tables, get_all_conversations, get_chats_by_conversation_id, save_conversation, save_chat, delete_conversation
 from src.data.models import Conversation, Chat
+#validation
+from litellm import completion
+from openai import Model
+if 'models' not in st.session_state:
+    with open("models.json", "r") as file:
+        st.session_state['models'] = json.load(file)
 
 # PAGE CONFIG
 st.set_page_config(
@@ -43,7 +51,8 @@ st.markdown("""<style>.eczjsme4 {
             </style>""", unsafe_allow_html=True)
 
 # INITIIAL SYSTEM PROMPT INTERPRETER
-interpreter.system_message = """
+if 'system_message' not in st.session_state:
+    st.session_state['system_message'] = """
 You are Open Interpreter, a world-class programmer that can complete any goal by executing code.
 First, write a plan. *Always recap the plan between each code block* (you have extreme short-term memory loss, so you need to recap the plan between each message block to retain
 it).
@@ -75,7 +84,10 @@ if 'user_id' not in st.session_state:
 
 # INITIAL STATES
 if 'openai_key' in st.session_state and 'temperature' in st.session_state:
-    interpreter.reset()
+    try:
+        interpreter.reset()
+    except:
+        pass
     interpreter.api_key = st.session_state.openai_key
     interpreter.temperature = st.session_state.temperature
     interpreter.max_tokens = st.session_state.max_tokens
@@ -109,6 +121,10 @@ conversation_options = [f"{conversation['name']}" for conversation in conversati
 with st.sidebar:
     with st.expander("Settings", st.session_state.openai_key == ''):
         openai_input = st.text_input('OpenAI Key:', type="password")
+        model = st.session_state.models[3]['model']
+        if 'modelos' not in st.session_state:
+            st.session_state.modelos = [i['model'] for i in st.session_state.models]
+        smodel = st.selectbox('🔌 models', st.session_state.modelos, index=st.session_state.modelos.index(model),disabled= not st.session_state.openai_key)
         temperature = st.slider('🌡 Tempeture', min_value=0.1, max_value=1.0, value=st.session_state.temperature, step=0.01)
         max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=1024, value=st.session_state.max_tokens, step=1)
 
@@ -118,14 +134,19 @@ with st.sidebar:
         if save_button and openai_input:
             button_container.button("Saving...", disabled=False, key='2')
             try:
+                os.environ["OPENAI_API_KEY"]=openai_input
+                # completion(model=smodel,messages=[{ "content": "Hello, how are you?","role": "user"}],temperature=temperature, max_tokens= max_tokens)
                 st.session_state.openai_key = openai_input
+                st.session_state.model = smodel
+                modelos = Model.list(api_key=st.session_state['openai_key'])
+                # Extract the 'id' values from the JSON data
+                model_ids = [entry["id"] for entry in modelos["data"]]
+                # Create a new list with models that exist in the JSON data
+                st.session_state.modelos = [i['model'] for i in st.session_state.models if i['model'] in model_ids]
                 st.session_state.temperature = temperature
                 st.session_state.max_tokens = max_tokens
-                interpreter.reset()
-                interpreter.api_key = openai_input
-                interpreter.temperature = temperature
-                interpreter.max_tokens = max_tokens
-                interpreter.auto_run = True
+                context_window = [t['context_window'] for t in st.session_state.models if t['model']==smodel]
+                st.session_state['context_window']=context_window[0]
                 button_container.empty()
                 st.rerun()
             except Exception as e:
@@ -192,7 +213,17 @@ for msg in st.session_state.messages:
 if prompt := st.chat_input(placeholder="Write here your message", disabled=not st.session_state.openai_key):
     # st.write(interpreter.messages)
 
-    interpreter.model = "gpt-3.5-turbo-0613"
+		
+    interpreter.reset()
+    if 'mensajes' in st.session_state:
+        interpreter.messages = st.session_state['mensajes']
+    interpreter.api_key = st.session_state.openai_key
+    interpreter.model = st.session_state.model
+    interpreter.context_window = st.session_state['context_window']
+    interpreter.temperature = st.session_state.temperature
+    interpreter.max_tokens = st.session_state.max_tokens
+    interpreter.system_message =st.session_state.system_message
+    interpreter.auto_run = True
 
     with st.chat_message("user"):
         st.markdown(f'<p>{prompt}</p>', True)
@@ -261,6 +292,7 @@ if prompt := st.chat_input(placeholder="Write here your message", disabled=not s
             {"role": "assistant", "content": full_response})
         assistant_chat = Chat(current_conversation["id"],"assistant", full_response)
         save_chat(assistant_chat)
+        st.session_state['mensajes'] = interpreter.messages
         
 
 
