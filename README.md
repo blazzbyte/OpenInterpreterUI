@@ -65,7 +65,7 @@ Before you begin, ensure you have met the following requirements:
 
 1. To run the GuiStreamlitOpenInterpreter, use the following command:
     ```bash
-    streamlit run streamlit_app.py --server.port 8501
+    streamlit run app.py --server.port 8501
     ```
 2. Access the application in your web browser at http://localhost:8501.
 3. Use the GUI to execute Python code and interact with OpenAI applications.
