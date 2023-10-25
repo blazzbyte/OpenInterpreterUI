@@ -52,7 +52,7 @@ Before you begin, ensure you have met the following requirements:
 2. Navigate to the project directory:
 
     ```bash
-    cd GuiStreamlitOpenInterpreter
+    cd OpenInterpreterUI
     ```
 
 3. Install the required dependencies using pip:
@@ -63,9 +63,9 @@ Before you begin, ensure you have met the following requirements:
 
 ## Usage
 
-1. To run the GuiStreamlitOpenInterpreter, use the following command:
+1. To run the OpenInterpreterUI, use the following command:
     ```bash
-    streamlit run streamlit_app.py --server.port 8501
+    streamlit run app.py --server.port 8501
     ```
 2. Access the application in your web browser at http://localhost:8501.
 3. Use the GUI to execute Python code and interact with OpenAI applications.
