@@ -1,0 +1,106 @@
+
+import streamlit as st
+from streamlit.components.v1 import html
+from streamlit_extras.add_vertical_space import add_vertical_space
+from streamlit_option_menu import option_menu
+
+from st_components.st_conversations import conversation_navigation
+
+import os 
+
+def st_sidebar():
+    # try:
+        with st.sidebar:
+            # Select choice of API Server
+            api_server = st.radio('Your API Server',['OpenAI API','Open Router API'],horizontal=True)
+            
+            # Set credentials based on choice of API Server
+            if api_server == 'OpenAI API':
+                set_open_ai_server_credentials()
+            if api_server == 'Open Router API':
+                set_open_router_server_credentials()
+
+            # Section dedicated to navigate conversations
+            conversation_navigation()
+            
+            # Section dedicated to About Us
+            about_us()
+
+    # except Exception as e:
+    #     st.error(e)
+
+def about_us():
+    add_vertical_space(8)
+    html_chat = '<center><h5>🤗 Support the project with a donation for the development of new Features 🤗</h5>'
+    st.markdown(html_chat, unsafe_allow_html=True)
+    button = '<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="blazzmocompany" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>'
+    html(button, height=70, width=220)
+    iframe = '<style>iframe[width="220"]{position: absolute; top: 50%;left: 50%;transform: translate(-50%, -50%);margin:26px 0}</style>'
+    st.markdown(iframe, unsafe_allow_html=True)
+    add_vertical_space(2)
+    st.write('<center><h6>Made with ❤️ by <a href="mailto:blazzmo.company@gmail.com">BlazzByte</a></h6>',
+            unsafe_allow_html=True)
+
+
+def set_open_ai_server_credentials():
+    with st.expander(label="Settings", expanded= (not st.session_state['chat_ready'])):
+        openai_key = st.text_input('OpenAI Key:', type="password")
+        os.environ['OPENAI_API_KEY '] = openai_key
+        model = st.selectbox(
+            label= '🔌 models', 
+            options= list(st.session_state['models']['openai'].keys()), 
+            index= 0,
+            # disabled= not st.session_state.openai_key # Comment: Why?
+        )
+        context_window = st.session_state['models']['openai'][model]['context_window']
+
+        temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
+        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=4000, value=st.session_state.get('max_tokens', 512), step=1)
+        button_container = st.empty()
+        save_button = button_container.button("Save Changes 🚀", key='open_ai_save_model_configs')
+        
+        if save_button and openai_key:
+            st.session_state['api_choice'] = 'openai'
+            st.session_state['openai_key'] = openai_key  
+            st.session_state['model'] = model  
+            st.session_state['temperature'] = temperature  
+            st.session_state['max_tokens'] = max_tokens     
+            st.session_state['context_window'] = context_window    
+            st.session_state['chat_ready'] = True
+            button_container.empty()
+            st.rerun()
+
+def set_open_router_server_credentials():
+    with st.expander(label="Settings", expanded=(not st.session_state['chat_ready'])):
+        openrouter_key = st.text_input('Open Router Key:', type="password")
+        openrouter_api_base = "https://52b2-34-90-25-41.ngrok-free.app/v1" #"https://openrouter.ai/api/v1/chat/completions"
+        openrouter_headers = {
+            "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
+            "X-Title": "Open-Interpreter Gpt App", # Optional. Shows on openrouter.ai
+        }
+
+        model = st.selectbox(
+            label= '🔌 models', 
+            options= list(st.session_state['models']['openrouter'].keys()), 
+            index= 0,
+            # disabled= not st.session_state.openai_key # Comment: Why?
+        )
+        context_window = st.session_state['models']['openrouter'][model]['context_window']
+
+        temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
+        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=4000, value=st.session_state.get('max_tokens', 512), step=1)
+        button_container = st.empty()
+        save_button = button_container.button("Save Changes 🚀", key='open_router_save_model_configs')
+        
+        if save_button and openrouter_key:
+            st.session_state['api_choice'] = 'openrouter'
+            st.session_state['openrouter_key'] = openrouter_key 
+            st.session_state['openrouter_api_base'] = openrouter_api_base
+            st.session_state['openrouter_headers'] = openrouter_headers 
+            st.session_state['model'] = model  
+            st.session_state['temperature'] = temperature  
+            st.session_state['max_tokens'] = max_tokens   
+            st.session_state['context_window'] = context_window
+            st.session_state['chat_ready'] = True
+            button_container.empty()
+            st.rerun()

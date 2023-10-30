@@ -1,22 +1,81 @@
-[
-    {
-        "model": "gpt-4-0613",
-        "context_window": "8192"
+{
+    "openai": {
+        "gpt-3.5-turbo": {
+            "context_window": 4097
+        },
+        "gpt-4": {
+            "context_window": 8192
+        },
+        "gpt-4-32k": {
+            "context_window": 32768
+        }
     },
-    {
-        "model": "gpt-4-32k",
-        "context_window": "32768"
-    },
-    {
-        "model": "gpt-3.5-turbo",
-        "context_window": "4097"
-    },
-    {
-        "model": "gpt-3.5-turbo-0613",
-        "context_window": "4097"
-    },
-    {
-        "model": "gpt-3.5-turbo-16k-0613",
-        "context_window": "16385"
+    "openrouter": {
+        "mistralai/mistral-7b-instruct": {
+            "context_window": 8192
+        },
+        "openai/gpt-4-0613": {
+            "context_window": 8192
+        },
+        "openai/gpt-4-32k": {
+            "context_window": 32768
+        },
+        "openai/gpt-3.5-turbo": {
+            "context_window": 4097
+        },
+        "openai/gpt-3.5-turbo-16k": {
+            "context_window": 16384
+        },
+        "openai/gpt-3.5-turbo-instruct": {
+            "context_window": 4095
+        },
+        "anthropic/claude-2": {
+            "context_window": 100000
+        },
+        "anthropic/claude-instant-v1": {
+            "context_window": 100000
+        },
+        "meta-llama/llama-2-13b-chat": {
+            "context_window": 4096
+        },
+        "meta-llama/llama-2-70b-chat": {
+            "context_window": 4096
+        },
+        "nousresearch/nous-hermes-llama2-13b": {
+            "context_window": 4096
+        },
+        "nousresearch/nous-hermes-llama2-70b": {
+            "context_window": 4096
+        },
+        "meta-llama/codellama-34b-instruct": {
+            "context_window": 8192
+        },
+        "phind/phind-codellama-34b": {
+            "context_window": 4096
+        },
+        "jondurbin/airoboros-l2-70b": {
+            "context_window": 4096
+        },
+        "migtissera/synthia-70b": {
+            "context_window": 8192
+        },
+        "open-orca/mistral-7b-openorca": {
+            "context_window": 8192
+        },
+        "pygmalionai/mythalion-13b": {
+            "context_window": 8192
+        },
+        "undi95/remm-slerp-l2-13b": {
+            "context_window": 6144
+        },
+        "gryphe/mythomax-l2-13b": {
+            "context_window": 4096
+        },
+        "gryphe/mythomax-l2-13b-8k": {
+            "context_window": 8192
+        },
+        "xwin-lm/xwin-lm-70b": {
+            "context_window": 8192
+        }
     }
-]
+}
