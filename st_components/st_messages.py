@@ -1,8 +1,20 @@
 import streamlit as st
 
+from st_components.st_interpreter import setup_interpreter
 # Database
 from src.data.database import save_chat
 from src.data.models import Chat
+
+def chat_with_interpreter():
+    
+    # GENERATE MESSAGES
+    if prompt := st.chat_input(placeholder="Write here your message", disabled=not st.session_state['chat_ready']):
+    
+        setup_interpreter()
+
+        handle_user_message(prompt)
+
+        handle_assistant_response(prompt)
 
 def handle_user_message(prompt):
     with st.chat_message("user"):
@@ -11,36 +23,34 @@ def handle_user_message(prompt):
         user_chat = Chat(st.session_state['current_conversation']["id"], "user", prompt)
         save_chat(user_chat)
 
-def handle_assistant_response(prompt, interpreter):
+def handle_assistant_response(prompt):
     with st.chat_message("assistant"):
         # Initialize variables
         codeb = True
         outputb = False
         full_response = ""
         message_placeholder = st.empty()
-        
-        st.write(interpreter.chat)
-        for chunk in interpreter.chat(
-            prompt, display=False, stream=True,
-            
-        ):
-            full_response, codeb, outputb = format_response(chunk, full_response, codeb, outputb)
-            message_placeholder.markdown(full_response + "▌")
-            message_placeholder.markdown(full_response)
+        with st.spinner('thinking'):
+            for chunk in st.session_state['interpreter'].chat(message=prompt, display=True, stream=True):  
+                full_response, codeb, outputb = format_response(chunk, full_response, codeb, outputb)
+                
+                # Join the formatted messages
+                message_placeholder.markdown(full_response + "▌")
+                message_placeholder.markdown(full_response)
         
         st.session_state.messages.append({"role": "assistant", "content": full_response})
         assistant_chat = Chat(st.session_state['current_conversation']["id"], "assistant", full_response)
         save_chat(assistant_chat)
-        st.session_state['messages__'] = interpreter.messages
+        st.session_state['mensajes'] = st.session_state['interpreter'].messages
 
 def format_response(chunk, full_response, codeb, outputb):
-    # Handle message chunks
+    # Handle message chunks (copy-paste from original)
     if "message" in chunk:
         full_response += chunk["message"]
         if chunk['message'] == ":":
             full_response += "\n"
 
-    # Handle code chunks
+    # Handle code chunks (copy-paste from original)
     if "code" in chunk:
         if full_response.endswith("```"):
             if chunk['code'].find("\n") != -1 and codeb:
@@ -49,12 +59,12 @@ def format_response(chunk, full_response, codeb, outputb):
                     "```" + partido, "\n```\n" + partido + chunk['code'])
                 codeb = False
             else:
-                full_response = full_response[:len(
-                    full_response) - 3] + chunk['code'] + "```"
+                full_response = full_response[:len(full_response) - 3] + chunk['code'] + "```"
         else:
             full_response += f"```{chunk['code']}```"
-
-    # Handle code execution chunks
+    
+    # (copy-paste from original # Output)
+    # Handle code execution chunks 
     if "executing" in chunk:
         if full_response.endswith("```") and full_response[:len(full_response)-3].split("```")[-1].find("\n") != -1:
             full_response = full_response[:len(full_response)-3] + "\n```"
@@ -76,12 +86,3 @@ def format_response(chunk, full_response, codeb, outputb):
         full_response += "\n"
 
     return full_response, codeb, outputb
-
-
-def chat_with_interpreter(interpreter):
-    # GENERATE MESSAGES
-    if prompt := st.chat_input(placeholder="Write here your message", disabled=not st.session_state['chat_ready']):
-
-        handle_user_message(prompt)
-
-        handle_assistant_response(prompt, interpreter)

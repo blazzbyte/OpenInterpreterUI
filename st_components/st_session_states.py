@@ -1,7 +1,7 @@
 import streamlit as st
 import uuid
 import json
-import os
+import interpreter
 
 from src.utils.prompts import PROMPTS
 
@@ -20,3 +20,5 @@ def init_session_states():
         st.session_state['system_message'] = PROMPTS.system_message
     if 'user_id' not in st.session_state:
         st.session_state['user_id'] = str(uuid.uuid4())
+    if 'interpreter' not in st.session_state:
+        st.session_state['interpreter'] = interpreter

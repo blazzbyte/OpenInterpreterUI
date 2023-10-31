@@ -1,17 +1,17 @@
 import streamlit as st
 
 from st_components.st_conversations import init_conversations
-from st_components.st_interpreter import setup_interpreter
 from st_components.st_messages import chat_with_interpreter
 
 # Database
-from src.data.database import create_tables, get_all_conversations, get_chats_by_conversation_id, save_conversation, save_chat, delete_conversation
+from src.data.database import get_chats_by_conversation_id, save_conversation, save_chat, delete_conversation
 from src.data.models import Conversation, Chat
 import uuid
 
 
 
-def st_main(interpreter):
+def st_main():
+        
     # try:
         if not st.session_state['chat_ready']:
             
@@ -22,10 +22,8 @@ def st_main(interpreter):
             create_or_get_current_conversation()
 
             render_messages()
-
-            interpreter = setup_interpreter(interpreter)
             
-            chat_with_interpreter(interpreter)
+            chat_with_interpreter()
     
     # except Exception as e:
     #     st.error(e)

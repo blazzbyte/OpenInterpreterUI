@@ -12,13 +12,15 @@ def st_sidebar():
     # try:
         with st.sidebar:
             # Select choice of API Server
-            api_server = st.radio('Your API Server',['OpenAI API','Open Router API'],horizontal=True)
+            api_server = st.radio('Your API Server',['OpenAI','Open Router','OpenAI Mock'],horizontal=True)
             
             # Set credentials based on choice of API Server
-            if api_server == 'OpenAI API':
+            if api_server == 'OpenAI':
                 set_open_ai_server_credentials()
-            if api_server == 'Open Router API':
+            elif api_server == 'Open Router':
                 set_open_router_server_credentials()
+            elif api_server == "OpenAI Mock":
+                st.warning('under construction')
 
             # Section dedicated to navigate conversations
             conversation_navigation()
@@ -55,11 +57,12 @@ def set_open_ai_server_credentials():
         context_window = st.session_state['models']['openai'][model]['context_window']
 
         temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
-        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=4000, value=st.session_state.get('max_tokens', 512), step=1)
+        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000, value=st.session_state.get('max_tokens', 512), step=1)
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_ai_save_model_configs')
         
         if save_button and openai_key:
+            os.environ["OPENAI_API_KEY"] = openai_key
             st.session_state['api_choice'] = 'openai'
             st.session_state['openai_key'] = openai_key  
             st.session_state['model'] = model  
@@ -73,7 +76,7 @@ def set_open_ai_server_credentials():
 def set_open_router_server_credentials():
     with st.expander(label="Settings", expanded=(not st.session_state['chat_ready'])):
         openrouter_key = st.text_input('Open Router Key:', type="password")
-        openrouter_api_base = "https://52b2-34-90-25-41.ngrok-free.app/v1" #"https://openrouter.ai/api/v1/chat/completions"
+        openrouter_api_base = "https://openrouter.ai/api/v1/chat/completions"
         openrouter_headers = {
             "HTTP-Referer": "http://localhost:3000", # To identify your app. Can be set to e.g. http://localhost:3000 for testing
             "X-Title": "Open-Interpreter Gpt App", # Optional. Shows on openrouter.ai
@@ -88,16 +91,19 @@ def set_open_router_server_credentials():
         context_window = st.session_state['models']['openrouter'][model]['context_window']
 
         temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
-        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=4000, value=st.session_state.get('max_tokens', 512), step=1)
+        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000, value=st.session_state.get('max_tokens', 512), step=1)
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_router_save_model_configs')
         
-        if save_button and openrouter_key:
+        if save_button and openrouter_key:            
+            os.environ["OPENROUTER_API_KEY"] = openrouter_key
+            os.environ["OR_SITE_URL"] = openrouter_headers["HTTP-Referer"]
+            os.environ["OR_APP_NAME"] = openrouter_headers["X-Title"]
             st.session_state['api_choice'] = 'openrouter'
             st.session_state['openrouter_key'] = openrouter_key 
             st.session_state['openrouter_api_base'] = openrouter_api_base
             st.session_state['openrouter_headers'] = openrouter_headers 
-            st.session_state['model'] = model  
+            st.session_state['model'] = f'openrouter/{model}'  
             st.session_state['temperature'] = temperature  
             st.session_state['max_tokens'] = max_tokens   
             st.session_state['context_window'] = context_window
