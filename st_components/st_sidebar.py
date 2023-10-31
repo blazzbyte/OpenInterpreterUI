@@ -42,6 +42,8 @@ def about_us():
     add_vertical_space(2)
     st.write('<center><h6>Made with ❤️ by <a href="mailto:blazzmo.company@gmail.com">BlazzByte</a></h6>',
             unsafe_allow_html=True)
+    st.write('<center><h6>Contribution 🤝 by <a href="mailto:tranhoangnguyen03@gmail.com">Sergeant113</a></h6>',
+            unsafe_allow_html=True)
 
 
 def set_open_ai_server_credentials():
