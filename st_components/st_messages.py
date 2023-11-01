@@ -23,15 +23,25 @@ def handle_user_message(prompt):
         user_chat = Chat(st.session_state['current_conversation']["id"], "user", prompt)
         save_chat(user_chat)
 
+def add_memory(prompt):
+    look_back = -2*st.session_state['num_pair_messages_recall']
+    memory = '\n'.join(
+            [f"{i['role'].capitalize()}: {i['content']}" for i in st.session_state['messages'][look_back:]]
+        ).replace('User', '\nUser' 
+    )
+    prompt_with_memory = f"user's request:{prompt}. --- \nBelow is the transcript of your past conversation with the user: {memory} ---\n"
+    return prompt_with_memory
+
 def handle_assistant_response(prompt):
     with st.chat_message("assistant"):
-        # Initialize variables
+        # Initialize variables   
+        prompt_with_memory = add_memory(prompt)
         codeb = True
         outputb = False
         full_response = ""
         message_placeholder = st.empty()
         with st.spinner('thinking'):
-            for chunk in st.session_state['interpreter'].chat(message=prompt, display=True, stream=True):  
+            for chunk in st.session_state['interpreter'].chat(message=add_memory(prompt_with_memory), display=False, stream=True):  
                 full_response, codeb, outputb = format_response(chunk, full_response, codeb, outputb)
                 
                 # Join the formatted messages

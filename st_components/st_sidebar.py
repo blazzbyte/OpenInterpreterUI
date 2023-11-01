@@ -28,6 +28,7 @@ def st_sidebar():
             # Section dedicated to About Us
             about_us()
 
+
     # except Exception as e:
     #     st.error(e)
 
@@ -60,6 +61,9 @@ def set_open_ai_server_credentials():
 
         temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
         max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000, value=st.session_state.get('max_tokens', 512), step=1)
+
+        num_pair_messages_recall = st.slider('**Memory Size**: user-assistant message pairs', min_value=1, max_value=10, value=5)
+
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_ai_save_model_configs')
         
@@ -71,6 +75,9 @@ def set_open_ai_server_credentials():
             st.session_state['temperature'] = temperature  
             st.session_state['max_tokens'] = max_tokens     
             st.session_state['context_window'] = context_window    
+
+            st.session_state['num_pair_messages_recall'] = num_pair_messages_recall
+
             st.session_state['chat_ready'] = True
             button_container.empty()
             st.rerun()
@@ -94,6 +101,9 @@ def set_open_router_server_credentials():
 
         temperature = st.slider('🌡 Tempeture', min_value=0.01, max_value=1.0, value=st.session_state.get('temperature', 0.5), step=0.01)
         max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000, value=st.session_state.get('max_tokens', 512), step=1)
+
+        num_pair_messages_recall = st.slider('**Memory Size**: user-assistant message pairs', min_value=1, max_value=10, value=5)
+        
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_router_save_model_configs')
         
@@ -109,6 +119,9 @@ def set_open_router_server_credentials():
             st.session_state['temperature'] = temperature  
             st.session_state['max_tokens'] = max_tokens   
             st.session_state['context_window'] = context_window
+            
+            st.session_state['num_pair_messages_recall'] = num_pair_messages_recall
+
             st.session_state['chat_ready'] = True
             button_container.empty()
             st.rerun()
