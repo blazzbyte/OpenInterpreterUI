@@ -132,4 +132,4 @@ yarl==1.9.2
 yaspin==3.0.1
 zipp==3.17.0
 loguru
-open-interpreter
+open-interpreter==0.1.10
