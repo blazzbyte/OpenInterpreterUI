@@ -1,7 +1,7 @@
 # Gui Streamlit OpenInterpreter
 Are you tired of the hassle of running code and having to set up your envinronment for development? Say hello to GuiStreamlitOpenInterpreter, a game-changing project that's designed to help people that don't want to buy a montly suscription and desire to have the advantage of pay as they go to get a smooth experience. With a user-friendly graphical user interface (GUI) powered by Streamlit, you can effortlessly engage with Python, javascrip and others languages without the need for traditional coding to help out begginers.
 
-[![Streamlit UI](Open-Interpreter-Web.png)](https://openinterpreter.streamlit.app/)
+[![Streamlit UI](./public/oi-web.png)](https://openinterpreter.streamlit.app/)
 
 ## Table of Contents
 
