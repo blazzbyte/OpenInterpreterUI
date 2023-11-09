@@ -2,11 +2,13 @@
 
 # DB and uuid
 *.db
-litell_uuid.txt
+litellm_uuid.txt
+
 # Virtual environment
 myenv/
 venv/
 env/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
