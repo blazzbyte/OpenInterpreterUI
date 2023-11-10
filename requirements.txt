@@ -2,6 +2,7 @@ aiohttp==3.8.5
 aiosignal==1.3.1
 altair==5.1.1
 annotated-types==0.5.0
+ansicon==1.89.0
 anyio==3.7.1
 appdirs==1.4.4
 astor==0.8.1
@@ -22,6 +23,7 @@ contourpy==1.1.1
 cycler==0.12.0
 dataclasses-json==0.6.1
 defusedxml==0.7.1
+exceptiongroup==1.1.3
 face==22.0.0
 Faker==19.6.2
 favicon==0.7.0
@@ -40,6 +42,7 @@ idna==3.4
 importlib-metadata==6.8.0
 inquirer==3.1.3
 Jinja2==3.1.2
+jinxed==1.2.0
 jsonpatch==1.33
 jsonpointer==2.4
 jsonschema==4.19.1
@@ -47,7 +50,8 @@ jsonschema-specifications==2023.7.1
 kiwisolver==1.4.5
 langchain==0.0.305
 langsmith==0.0.41
-litellm==0.1.807
+litellm==0.13.0
+loguru==0.7.2
 lxml==4.9.3
 Markdown==3.4.4
 markdown-it-py==3.0.0
@@ -75,6 +79,7 @@ pydeck==0.8.1b0
 Pygments==2.16.1
 pymdown-extensions==10.3
 pyparsing==3.1.1
+pyreadline3==3.4.1
 python-dateutil==2.8.2
 python-dotenv==1.0.0
 python-editor==1.0.4
@@ -104,14 +109,14 @@ streamlit-extras==0.3.2
 streamlit-faker==0.0.2
 streamlit-image-coordinates==0.1.6
 streamlit-keyup==0.2.0
+streamlit-option-menu==0.3.6
 streamlit-toggle-switch==1.0.2
 streamlit-vertical-slider==1.0.2
-streamlit-option-menu==0.3.6
 tenacity==8.2.3
 termcolor==2.3.0
 tiktoken==0.4.0
 tokenizers==0.14.0
-tokentrim==0.1.10
+tokentrim==0.1.13
 toml==0.10.2
 tomli==2.0.1
 toolz==0.12.0
@@ -129,7 +134,7 @@ watchdog==3.0.0
 wcmatch==8.5
 wcwidth==0.2.8
 wget==3.2
+win32-setctime==1.1.0
 yarl==1.9.2
 yaspin==3.0.1
 zipp==3.17.0
-loguru==0.7.2
