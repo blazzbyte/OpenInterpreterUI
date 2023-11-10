@@ -132,4 +132,4 @@ wget==3.2
 yarl==1.9.2
 yaspin==3.0.1
 zipp==3.17.0
-loguru
+loguru==0.7.2
