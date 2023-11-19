@@ -59,7 +59,7 @@ def navigate_past_conversations(conversations, conversation_options):
             st.session_state.messages = get_chats_by_conversation_id(st.session_state['current_conversation']["id"])
     
 def delete_current_conversation():
-    if 'current_conversation' in st.session_state:
-        if st.button("Delete Current Conversation", type='primary'):
-            delete_conversation()
-            st.rerun()
+    if 'current_conversation' in st.session_state and st.button("Delete Current Conversation", type='primary'):
+        delete_conversation(st.session_state['current_conversation']["id"])
+        del st.session_state['current_conversation']
+        st.rerun()
