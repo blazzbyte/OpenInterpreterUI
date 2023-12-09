@@ -60,6 +60,11 @@ Before you begin, ensure you have met the following requirements:
     ```bash
     pip install -r requirements.txt
     ```
+- **Or Try it with Docker**
+
+    ```bash
+    make run
+    ```
 
 ## Usage
 
