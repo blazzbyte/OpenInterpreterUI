@@ -50,7 +50,7 @@ jsonschema-specifications==2023.7.1
 kiwisolver==1.4.5
 langchain==0.0.305
 langsmith==0.0.41
-litellm==0.13.0
+litellm==0.13.2
 loguru==0.7.2
 lxml==4.9.3
 Markdown==3.4.4
@@ -65,7 +65,7 @@ multidict==6.0.4
 mypy-extensions==1.0.0
 numexpr==2.8.7
 numpy==1.26.0
-open-interpreter==0.1.11
+open-interpreter==0.1.17
 openai==0.28.1
 packaging==23.2
 pandas==2.1.1
