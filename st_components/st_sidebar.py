@@ -6,25 +6,33 @@ from streamlit_option_menu import option_menu
 
 from st_components.st_conversations import conversation_navigation
 
-import os 
+import os
+
+OPEN_AI = 'OpenAI'
+AZURE_OPEN_AI = 'Azure OpenAI'
+OPEN_ROUTER = 'Open Router'
+OPEN_AI_MOCK = 'OpenAI Mock'
+
 
 def st_sidebar():
     # try:
         with st.sidebar:
             # Select choice of API Server
-            api_server = st.radio('Your API Server',['OpenAI','Open Router','OpenAI Mock'],horizontal=True)
-            
+            api_server = st.selectbox('Your API Server', [OPEN_AI, AZURE_OPEN_AI, OPEN_ROUTER, OPEN_AI_MOCK])
+
             # Set credentials based on choice of API Server
-            if api_server == 'OpenAI':
+            if api_server == OPEN_AI:
                 set_open_ai_server_credentials()
-            elif api_server == 'Open Router':
+            elif api_server == AZURE_OPEN_AI:
+                set_azure_open_ai_server_credentials()
+            elif api_server == OPEN_ROUTER:
                 set_open_router_server_credentials()
-            elif api_server == "OpenAI Mock":
+            elif api_server == OPEN_AI_MOCK:
                 st.warning('under construction')
 
             # Section dedicated to navigate conversations
             conversation_navigation()
-            
+
             # Section dedicated to About Us
             about_us()
 
@@ -52,8 +60,8 @@ def set_open_ai_server_credentials():
         openai_key = st.text_input('OpenAI Key:', type="password")
         os.environ['OPENAI_API_KEY '] = openai_key
         model = st.selectbox(
-            label= '🔌 models', 
-            options= list(st.session_state['models']['openai'].keys()), 
+            label= '🔌 models',
+            options= list(st.session_state['models']['openai'].keys()),
             index= 0,
             # disabled= not st.session_state.openai_key # Comment: Why?
         )
@@ -66,21 +74,59 @@ def set_open_ai_server_credentials():
 
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_ai_save_model_configs')
-        
+
         if save_button and openai_key:
             os.environ["OPENAI_API_KEY"] = openai_key
             st.session_state['api_choice'] = 'openai'
-            st.session_state['openai_key'] = openai_key  
-            st.session_state['model'] = model  
-            st.session_state['temperature'] = temperature  
-            st.session_state['max_tokens'] = max_tokens     
-            st.session_state['context_window'] = context_window    
+            st.session_state['openai_key'] = openai_key
+            st.session_state['model'] = model
+            st.session_state['temperature'] = temperature
+            st.session_state['max_tokens'] = max_tokens
+            st.session_state['context_window'] = context_window
 
             st.session_state['num_pair_messages_recall'] = num_pair_messages_recall
 
             st.session_state['chat_ready'] = True
             button_container.empty()
             st.rerun()
+
+
+def set_azure_open_ai_server_credentials():
+    with st.expander(label="Settings", expanded=(not st.session_state['chat_ready'])):
+        azure_openai_key = st.text_input(
+            'Azure OpenAI Key:',
+            type="password")
+        azure_endpoint = st.text_input(
+            'Azure endpoint',
+            placeholder="https://{your-resource-name}.openai.azure.com")
+        deployment_id = st.text_input(
+            'deployment-id',
+            help="The deployment name you chose when you deployed the model.")
+        api_version = st.text_input(
+            'api-version',
+            help="The API version to use for this operation. This follows the YYYY-MM-DD format.")
+        temperature = st.slider('🌡 Temperature', min_value=0.01, max_value=1.0,
+                                value=st.session_state.get('temperature', 0.5), step=0.01)
+        max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000,
+                               value=st.session_state.get('max_tokens', 512), step=1)
+        num_pair_messages_recall = st.slider('**Memory Size**: user-assistant message pairs', min_value=1, max_value=10,
+                                             value=5)
+        button_container = st.empty()
+        save_button = button_container.button("Save Changes 🚀", key='open_ai_save_model_configs')
+
+        if save_button and azure_openai_key:
+            st.session_state['api_choice'] = 'azure_openai'
+            st.session_state['openai_key'] = azure_openai_key
+            st.session_state['model'] = f"azure/{deployment_id}"
+            st.session_state['azure_endpoint'] = azure_endpoint
+            st.session_state['api_version'] = api_version
+            st.session_state['temperature'] = temperature
+            st.session_state['max_tokens'] = max_tokens
+            st.session_state['num_pair_messages_recall'] = num_pair_messages_recall
+            st.session_state['chat_ready'] = True
+            button_container.empty()
+            st.rerun()
+
 
 def set_open_router_server_credentials():
     with st.expander(label="Settings", expanded=(not st.session_state['chat_ready'])):
@@ -92,8 +138,8 @@ def set_open_router_server_credentials():
         }
 
         model = st.selectbox(
-            label= '🔌 models', 
-            options= list(st.session_state['models']['openrouter'].keys()), 
+            label= '🔌 models',
+            options= list(st.session_state['models']['openrouter'].keys()),
             index= 0,
             # disabled= not st.session_state.openai_key # Comment: Why?
         )
@@ -103,23 +149,23 @@ def set_open_router_server_credentials():
         max_tokens = st.slider('📝 Max tokens', min_value=1, max_value=2000, value=st.session_state.get('max_tokens', 512), step=1)
 
         num_pair_messages_recall = st.slider('**Memory Size**: user-assistant message pairs', min_value=1, max_value=10, value=5)
-        
+
         button_container = st.empty()
         save_button = button_container.button("Save Changes 🚀", key='open_router_save_model_configs')
-        
-        if save_button and openrouter_key:            
+
+        if save_button and openrouter_key:
             os.environ["OPENROUTER_API_KEY"] = openrouter_key
             os.environ["OR_SITE_URL"] = openrouter_headers["HTTP-Referer"]
             os.environ["OR_APP_NAME"] = openrouter_headers["X-Title"]
             st.session_state['api_choice'] = 'openrouter'
-            st.session_state['openrouter_key'] = openrouter_key 
+            st.session_state['openrouter_key'] = openrouter_key
             st.session_state['openrouter_api_base'] = openrouter_api_base
-            st.session_state['openrouter_headers'] = openrouter_headers 
-            st.session_state['model'] = f'openrouter/{model}'  
-            st.session_state['temperature'] = temperature  
-            st.session_state['max_tokens'] = max_tokens   
+            st.session_state['openrouter_headers'] = openrouter_headers
+            st.session_state['model'] = f'openrouter/{model}'
+            st.session_state['temperature'] = temperature
+            st.session_state['max_tokens'] = max_tokens
             st.session_state['context_window'] = context_window
-            
+
             st.session_state['num_pair_messages_recall'] = num_pair_messages_recall
 
             st.session_state['chat_ready'] = True
