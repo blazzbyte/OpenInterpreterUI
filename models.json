@@ -1,5 +1,8 @@
 {
     "openai": {
+        "gpt-4-0125-preview": {
+            "context_window": 128000
+        },
         "gpt-3.5-turbo": {
             "context_window": 4097
         },
