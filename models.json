@@ -8,6 +8,9 @@
         },
         "gpt-4-32k": {
             "context_window": 32768
+        },
+        "gpt-4-0125-preview": {
+            "context_window": 128000
         }
     },
     "openrouter": {
@@ -76,6 +79,23 @@
         },
         "xwin-lm/xwin-lm-70b": {
             "context_window": 8192
+        }
+    },
+    "vertexai": {
+        "gemini-pro": {
+            "context_window": 32760
+        },
+        "chat-bison": {
+            "context_window": 8192
+        },
+        "chat-bison-32k": {
+            "context_window": 32760
+        },
+        "codechat-bison": {
+            "context_window": 6144
+        },
+        "codechat-bison-32k": {
+            "context_window": 32760
         }
     }
 }

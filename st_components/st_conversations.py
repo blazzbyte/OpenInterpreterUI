@@ -1,7 +1,7 @@
 
 # Database
 from src.data.database import create_tables, get_all_conversations, get_chats_by_conversation_id, save_conversation, save_chat, delete_conversation
-from src.data.models import Conversation, Chat
+from src.data.models import Conversation
 import uuid
 
 # Streamlit
@@ -41,7 +41,7 @@ def navigate_past_conversations(conversations, conversation_options):
         icons_conversations = ['chat-right-dots-fill'] * len(conversation_options)
         selected_conversation = option_menu(
             "Conversations", conversation_options , 
-            default_index=0, menu_icon='chat', 
+            default_index=0, menu_icon='chat',
             icons=icons_conversations,
             styles={
                 "icon": {"color": "#FEFEFE", "font-size": "12px"}, 

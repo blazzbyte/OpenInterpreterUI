@@ -1,14 +1,13 @@
 import streamlit as st
 import uuid
 import json
-import interpreter
+from interpreter import interpreter
 
 from src.utils.prompts import PROMPTS
 
-from loguru import logger
 
 def init_session_states():
-    
+
     if 'models' not in st.session_state:
         with open("models.json", "r") as file:
             st.session_state['models'] = json.load(file)

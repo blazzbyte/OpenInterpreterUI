@@ -4,8 +4,8 @@ from st_components.st_conversations import init_conversations
 from st_components.st_messages import chat_with_interpreter
 
 # Database
-from src.data.database import get_chats_by_conversation_id, save_conversation, save_chat, delete_conversation
-from src.data.models import Conversation, Chat
+from src.data.database import get_chats_by_conversation_id, save_conversation
+from src.data.models import Conversation
 import uuid
 
 
@@ -44,7 +44,10 @@ def create_or_get_current_conversation():
         st.session_state.messages = get_chats_by_conversation_id(st.session_state['current_conversation']["id"])
 
 def render_messages():
-    # RENDER MESSAGES
+    """
+    Render Messages:
+    Render chat-message when generated.
+    """
     for msg in st.session_state.messages:
         if msg["role"] == "user":
             st.chat_message(msg["role"]).markdown(f'<p>{msg["content"]}</p>', True)
@@ -52,7 +55,10 @@ def render_messages():
             st.chat_message(msg["role"]).markdown(msg["content"])
 
 def introduction():
-    # Introduction
+    """
+    Introduction:
+    Display introductory messages for the user.
+    """
     st.info("👋 Hey, we're very happy to see you here. 🤗")
     st.info("👉 Set your OpenAI api key, to be able to run code while you generate it 🚀")
     st.error("👉 The objective of this project is to show an easy implementation of the use of Open Interpreter 🤗")
